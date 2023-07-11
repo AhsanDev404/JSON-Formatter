@@ -13,13 +13,20 @@
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@monaco-editor/react": "^4.5.1",
+    "brace": "^0.11.1",
     "copy-to-clipboard": "^3.3.3",
     "framer-motion": "^10.12.18",
+    "json-stringify-safe": "^5.0.1",
+    "json5": "^2.2.3",
     "jsonrepair": "^3.2.0",
     "react": "^18.2.0",
+    "react-code-blocks": "^0.1.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
-    "react-json-formatter": "^0.4.0"
+    "react-json-formatter": "^0.4.0",
+    "react-json-view": "^1.21.3",
+    "stringify": "^5.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.14",

@@ -1,10 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
   Textarea,
   VStack,
-  Code,
   Heading,
   Container,
   Checkbox,
@@ -19,13 +18,16 @@ import {
 } from "@chakra-ui/react";
 import { BsClipboard2Check, BsFolder2Open } from "react-icons/bs";
 import { MdDeleteOutline } from "react-icons/md";
-import JsonFormatter from "react-json-formatter";
-import { jsonrepair } from "jsonrepair";
+import { RiEyeOffLine, RiEyeLine } from "react-icons/ri";
+import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import copy from "copy-to-clipboard";
 import { PiClipboardTextBold } from "react-icons/pi";
+import ReactJson from "react-json-view";
+import { jsonrepair } from "jsonrepair";
+
 const JsonFormatterFile = () => {
   const [inputValue, setInputValue] = useState("");
-  const [formattedJson, setFormattedJson] = useState("");
+  const [formattedJson, setFormattedJson] = useState(null);
   const [shouldFixErrors, setShouldFixErrors] = useState(true);
   const [jsonTem, setJsonTem] = useState(0);
   const [jsonSpec, setJsonSpec] = useState("RFC 8259");
@@ -51,19 +53,19 @@ const JsonFormatterFile = () => {
     if (isUrl(inputValue)) {
       fetchJsonFromUrl();
     }
-
+  
     if (shouldFixErrors) {
       try {
-        const repaired = jsonrepair(inputValue);
-        setFormattedJson(repaired);
+        const repairedJson = JSON.parse(jsonrepair(inputValue))
+        setFormattedJson(repairedJson);
       } catch (error) {
-        setFormattedJson(error.message);
+        setFormattedJson({ error: error.message });
       }
     } else {
       try {
         setFormattedJson(JSON.parse(inputValue));
       } catch (error) {
-        setFormattedJson(error.message);
+        setFormattedJson({ error: error.message });
       }
     }
   };
@@ -74,7 +76,7 @@ const JsonFormatterFile = () => {
       const json = await response.json();
       setFormattedJson(json);
     } catch (error) {
-      setFormattedJson(error.message);
+      setFormattedJson({ error: error.message });
     }
   };
 
@@ -94,7 +96,12 @@ const JsonFormatterFile = () => {
   };
 
   return (
-    <Stack justifyContent={"center"} minH={"97vh"} alignItems={"center"}>
+    <Stack
+      justifyContent={"center"}
+      minH={"100vh"}
+      alignItems={"center"}
+      color={"white"}
+    >
       <Heading as="h1" size="xl" mb={4} textAlign={"center"}>
         JSON Formatter
       </Heading>
@@ -153,6 +160,7 @@ const JsonFormatterFile = () => {
             p={5}
             borderRadius={10}
             alignItems={"flex-end"}
+            bgColor={"#001"}
           >
             <Textarea
               rows={10}
@@ -204,11 +212,12 @@ const JsonFormatterFile = () => {
         </Button>
       </Box>
       {formattedJson && (
-        <Code width={"lg"}>
+        <Box width={"4xl"} bgColor={"#001"} p={5} borderRadius={"xl"}>
           <Box width={"100%"} display={"flex"} justifyContent={"flex-end"}>
             <IconButton
               onClick={() => {
-                copy(formattedJson), setCopied(true);
+                copy(formattedJson);
+                setCopied(true);
               }}
               color={"blue.400"}
               variant={"unstyled"}
@@ -216,16 +225,36 @@ const JsonFormatterFile = () => {
               {copied ? <BsClipboard2Check /> : <PiClipboardTextBold />}
             </IconButton>
           </Box>
-          <JsonFormatter
-            json={formattedJson}
-            tabWith={jsonTem}
-            jsonStyle={{
-              propertyStyle: { color: "red" },
-              stringStyle: { color: "green" },
-              numberStyle: { color: "darkorange" },
-            }}
-          />
-        </Code>
+          {formattedJson.error ? (
+            <Box>Error: {formattedJson.error}</Box>
+          ) : (
+            <ReactJson
+              src={formattedJson}
+              theme="monokai"
+              collapsed={1}
+              iconStyle="circle"
+              displayDataTypes={false}
+              displayObjectSize={false}
+              enableClipboard={false}
+              shouldCollapse={({ src, namespace, type }) =>
+                type === "object" &&
+                (namespace.indexOf("ok") > -1 || namespace.includes("["))
+              }
+              name={false}
+              style={{
+                marginTop: 20,
+                backgroundColor: "#001",
+                borderRadius: 10,
+              }}
+              icon={{
+                expanded: <FiChevronDown />,
+                collapsed: <FiChevronRight />,
+              }}
+              defaultValue=""
+              indentWidth={jsonTem}
+            />
+          )}
+        </Box>
       )}
     </Stack>
   );
