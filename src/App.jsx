@@ -1,8 +1,8 @@
-import JsonFormatter from "./components/JsonFormatter";
+import JsonFormatterFile from "./components/JsonFormatter";
 
 function App() {
   return <>
-  <JsonFormatter />
+  <JsonFormatterFile />
   </>;
 }
 
