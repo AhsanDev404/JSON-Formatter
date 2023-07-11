@@ -53,18 +53,17 @@ const JsonFormatterFile = () => {
     }
 
     if (shouldFixErrors) {
-        try {
-            const repaired = jsonrepair(inputValue);
-      setFormattedJson(repaired);
-        } catch (error) {
-            setFormattedJson(error.message)
-        }
-      
+      try {
+        const repaired = jsonrepair(inputValue);
+        setFormattedJson(repaired);
+      } catch (error) {
+        setFormattedJson(error.message);
+      }
     } else {
       try {
         setFormattedJson(JSON.parse(inputValue));
       } catch (error) {
-        setFormattedJson(error.message)
+        setFormattedJson(error.message);
       }
     }
   };
@@ -214,7 +213,7 @@ const JsonFormatterFile = () => {
               color={"blue.400"}
               variant={"unstyled"}
             >
-              {copied ?  <BsClipboard2Check />:<PiClipboardTextBold /> }
+              {copied ? <BsClipboard2Check /> : <PiClipboardTextBold />}
             </IconButton>
           </Box>
           <JsonFormatter
