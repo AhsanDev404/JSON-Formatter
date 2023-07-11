@@ -108,12 +108,12 @@ const JsonFormatterFile = () => {
       <Stack width={"fit-content"} direction={"row-reverse"} gap={5}>
         <VStack justifyContent={"center"}>
           <VStack>
-            <Menu>
+            <Menu >
               <label>Json Template</label>
               <MenuButton as={Button} colorScheme="blue">
                 {jsonTem === 0 ? "Compact" : jsonTem + "Tabs Spaces"}
               </MenuButton>
-              <MenuList>
+              <MenuList color="black">
                 <MenuItem onClick={() => setJsonTem(4)}>4 Spaces tab</MenuItem>
                 <MenuItem onClick={() => setJsonTem(3)}>3 Spaces tab</MenuItem>
                 <MenuItem onClick={() => setJsonTem(2)}>2 Spaces tab</MenuItem>
@@ -126,7 +126,7 @@ const JsonFormatterFile = () => {
               <MenuButton as={Button} colorScheme="blue">
                 {jsonSpec}
               </MenuButton>
-              <MenuList>
+              <MenuList color="black">
                 <MenuItem onClick={() => setJsonSpec("RFC 8259")}>
                   RFC 8259
                 </MenuItem>
